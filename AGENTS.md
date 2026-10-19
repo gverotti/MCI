@@ -44,7 +44,36 @@ Pode ser uma base usada em outra disciplina. Sites sugeridos: r-bloggers (datase
 
 **Regras de nota zero:** trabalho muito parecido com estudos da literatura, livros, internet **ou plataformas de IA**. Portanto a base, as perguntas, as interpretações e o texto dos slides precisam ser do grupo. O agente apoia com código, conferência dos métodos e revisão, mas não deve entregar texto pronto e genérico para os slides.
 
-**Pendências de definição com o usuário:** prazo real, dupla, base de dados (e se já foi avisada à turma), cenário escolhido, linguagem (R ou Python) e ferramenta de slides.
+**Decisões do usuário:**
+- **Linguagem: Python, obrigatoriamente** (decidido em 19/10/2026). Não usar R.
+- **Base: Breast Cancer Wisconsin (Original)**, UCI: https://archive.ics.uci.edu/dataset/15/breast+cancer+wisconsin+original. Detalhes na seção "Dados".
+
+**Pendências de definição com o usuário:** prazo real, dupla, se a base já foi avisada à turma, qual dos 3 arquivos usar (original × WDBC), cenário/pergunta, tratamento dos IDs repetidos e ferramenta de slides.
+
+## Dados (`dados/breast+cancer+wisconsin+original/`)
+
+Pasta baixada inteira do UCI (validada em 19/10/2026). Ela contém **3 bases diferentes**:
+
+| Arquivo | Base | n | Variáveis | Faltantes |
+|---|---|---|---|---|
+| `breast-cancer-wisconsin.data` | **Original** (o link escolhido) | 699 | id + 9 escores **ordinais inteiros 1–10** + classe (2 = benigno, 4 = maligno) | 16 (`?` em `bare_nuclei`; 14 benignos, 2 malignos) |
+| `wdbc.data` | WDBC, diagnóstico (Street, 1995) | 569 | id + diagnóstico (B/M) + 30 medidas **contínuas** de núcleos celulares (média, EP e "pior" de raio, textura, perímetro, área, etc.) | 0 |
+| `wpbc.data` | WPBC, prognóstico (N/R = não recorrente / recorrente) | 198 | id + desfecho + tempo + 32 atributos | 4 |
+
+`unformatted-data` = a base original separada nos **8 grupos cronológicos de coleta** (jan/1989 a nov/1991), com a documentação de cada grupo.
+
+**Resultado da validação da base original:**
+- Bate com o `.names`: 699 linhas, 458 benignos (65,5%) e 241 malignos (34,5%), 16 faltantes, todos os atributos entre 1 e 10 (`mitoses` tem só 9 valores distintos).
+- **O `id` não é único:** são 645 ids distintos e 54 linhas com id repetido. Desses ids, 8 aparecem em pares de linhas idênticas, 39 têm versões diferentes dos atributos e **4 aparecem com classes diferentes**. Isso ameaça a suposição de independência e intercambiabilidade, então é preciso decidir o tratamento (manter, deduplicar ou ficar com 1 por id) e justificar nos slides.
+- As variáveis são **ordinais**, com muitos empates e concentração em 1 nos benignos. Medianas benigno × maligno: clump 3×8, unif_cell_size 1×6, unif_cell_shape 1×6, marginal_adhesion 1×5, single_epith 2×5, bare_nuclei 1×10, bland_chromatin 2×7, normal_nucleoli 1×6, mitoses 1×1.
+- Implicações para o trabalho:
+  - (a) Benigno × maligno é uma diferença enorme, então qualquer teste dá valor-p ≈ 0 e a comparação entre métodos fica pouco informativa.
+  - (b) Com n grande, o TCL enfraquece o argumento contra o teste paramétrico (item 4 do checklist).
+  - (c) A escala ordinal 1–10 torna a "média" discutível.
+  - (d) É uma das bases mais conhecidas da internet, o que aumenta o risco das regras "mesma base de outro grupo" e "parecido com estudos disponíveis".
+- Origem, para o item 1 dos slides: University of Wisconsin Hospitals, Madison, casos clínicos do Dr. William H. Wolberg, coletados de 1989 a 1991. Os escores vêm de citologia por aspiração com agulha fina (FNA), atribuídos pelo médico.
+
+**WDBC (verificação rápida):** 569 ids únicos, 357 B e 212 M, sem faltantes. As medidas são contínuas e várias são assimétricas e não normais por classe (Shapiro: área com p < 1e-7 nos malignos, assimetria 1,11).
 
 ## Listas de exercícios (`Material/Listas de Exercicios/`)
 
@@ -150,10 +179,10 @@ MCI/
 ## Próximos passos
 
 1. Confirmar o prazo real do Trabalho 1 (o PDF diz 16/out, 8:00h).
-2. Definir a dupla, a base de dados e o cenário (pareado, independentes, K grupos ou regressão).
-3. Definir a linguagem (R ou Python) e a ferramenta dos slides.
+2. Definir: arquivo (original × WDBC), cenário e pergunta, tratamento dos ids repetidos; avisar a turma da base.
+3. Definir a ferramenta dos slides.
 4. Montar o roteiro de análise seguindo o checklist de 8 itens + comparação paramétrico × permutação × bootstrap + escolha de B.
 
 ## Histórico
 
-- **19/10/2026:** criação da pasta `MCI/`, `git init`, primeiro commit, ligação ao remote `gverotti/MCI` e push. Criação deste `AGENTS.md`. Criação do `.venv` + `requirements.txt` copiando o ambiente do Modelagem_Logistico. Leitura completa do `Material/` (Unidades 02–04 + códigos R). Leitura das Listas 1 e 2 e do enunciado do Trabalho 1.
+- **19/10/2026:** criação da pasta `MCI/`, `git init`, primeiro commit, ligação ao remote `gverotti/MCI` e push. Criação deste `AGENTS.md`. Criação do `.venv` + `requirements.txt` copiando o ambiente do Modelagem_Logistico. Leitura completa do `Material/` (Unidades 02–04 + códigos R). Leitura das Listas 1 e 2 e do enunciado do Trabalho 1. Usuário escolheu Python e a base Breast Cancer Wisconsin (Original); validação feita (ids repetidos, 16 faltantes, pasta contém também WDBC e WPBC).
