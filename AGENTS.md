@@ -116,6 +116,8 @@ Pasta baixada inteira do UCI (validada em 19/10/2026). Ela contém **3 bases dif
 
 **WDBC, variáveis com pouca diferença B×M** (d de Cohen, p de Welch): symmetry_se (−0,01; 0,89), texture_se (−0,02; 0,84), fractal_dim_mean (−0,03; 0,77; assimetria 1,64 em B), smoothness_se (−0,14; 0,11), fractal_dim_se (0,17; 0,04). Razão de variâncias M/B: symmetry_se 2,07, fractal_dim_worst 2,44.
 
+**WDBC = dataset 17 do UCI** (https://archive.ics.uci.edu/dataset/17/breast+cancer+wisconsin+diagnostic). O `wdbc.data` que já está na pasta é essa base, então **não é preciso baixar de novo**. Conferido em 19/10/2026: é idêntico ao `sklearn.datasets.load_breast_cancer()` (569×30, mesmos valores e mesmo diagnóstico). O sklearn serve de referência para os nomes das colunas.
+
 **WDBC (verificação rápida):** 569 ids únicos, 357 B e 212 M, sem faltantes. As medidas são contínuas e várias são assimétricas e não normais por classe (Shapiro: área com p < 1e-7 nos malignos, assimetria 1,11).
 
 ## Listas de exercícios (`Material/Listas de Exercicios/`)
