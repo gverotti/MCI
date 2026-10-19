@@ -73,6 +73,10 @@ Pasta baixada inteira do UCI (validada em 19/10/2026). Ela contém **3 bases dif
   - (d) É uma das bases mais conhecidas da internet, o que aumenta o risco das regras "mesma base de outro grupo" e "parecido com estudos disponíveis".
 - Origem, para o item 1 dos slides: University of Wisconsin Hospitals, Madison, casos clínicos do Dr. William H. Wolberg, coletados de 1989 a 1991. Os escores vêm de citologia por aspiração com agulha fina (FNA), atribuídos pelo médico.
 
+**Lotes de coleta (base original):** o `.data` está em ordem cronológica, então o lote sai da posição da linha, com tamanhos 367, 70, 31, 17, 48, 49, 31 e 86 (conferido com `unformatted-data`). Proporção de malignos por lote: 0,455; 0,186; 0,290; 0,176; 0,250; 0,184; 0,452; 0,163. Mediana do `clump` por lote: 5, 3, 5, 5, 4, 4, 5, 3. Dos 46 ids repetidos, 16 aparecem em lotes diferentes (o `unformatted-data` cita um paciente que "reaparece no Grupo 8") e 30 dentro do mesmo lote.
+
+**WDBC, variáveis com pouca diferença B×M** (d de Cohen, p de Welch): symmetry_se (−0,01; 0,89), texture_se (−0,02; 0,84), fractal_dim_mean (−0,03; 0,77; assimetria 1,64 em B), smoothness_se (−0,14; 0,11), fractal_dim_se (0,17; 0,04). Razão de variâncias M/B: symmetry_se 2,07, fractal_dim_worst 2,44.
+
 **WDBC (verificação rápida):** 569 ids únicos, 357 B e 212 M, sem faltantes. As medidas são contínuas e várias são assimétricas e não normais por classe (Shapiro: área com p < 1e-7 nos malignos, assimetria 1,11).
 
 ## Listas de exercícios (`Material/Listas de Exercicios/`)
