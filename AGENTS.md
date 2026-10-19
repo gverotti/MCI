@@ -30,8 +30,17 @@ MCI/
 ├── relatorio/   # relatório final
 ├── AGENTS.md    # este arquivo
 ├── README.md
+├── requirements.txt
 └── .gitignore
 ```
+
+## Ambiente Python
+
+- `.venv/` local (fora do git), Python 3.12.10 (`C:\Users\Giovani Verotti\AppData\Local\Programs\Python\Python312`).
+- `requirements.txt` é uma **cópia exata** (`pip freeze`, 138 pacotes) do `.venv` do `../Modelagem_Logistico`, feita a pedido do usuário. Principais: numpy 1.26.4, scipy 1.17.1, pandas 3.0.5, polars 1.43.2, scikit-learn 1.9.0, statsmodels 0.14.6, matplotlib 3.11.1, numba 0.68.0, networkx, igraph, cvxpy, optbinning, skglm, jupyter.
+- Kernel Jupyter registrado como **"Python (MCI)"** (nome `mci`).
+- Recriar: `python -m venv .venv` → `.venv\Scripts\python -m pip install -r requirements.txt`.
+- Ao instalar uma lib nova, atualizar o `requirements.txt` (`pip freeze > requirements.txt`, mantendo o cabeçalho) e anotar aqui.
 
 ## Convenções
 
@@ -44,6 +53,7 @@ MCI/
 
 - Repositório criado e publicado no GitHub com a estrutura de pastas, o README e o `.gitignore` (R, Python, Jupyter, Quarto, LaTeX).
 - O README criado pelo GitHub foi mesclado (`--allow-unrelated-histories`), mantendo a versão local.
+- Ambiente virtual `.venv` criado e verificado (mesmas versões do Modelagem_Logistico; imports testados), kernel "Python (MCI)" registrado.
 - Nenhum código ou dado ainda.
 
 ## Próximos passos
@@ -53,4 +63,4 @@ MCI/
 
 ## Histórico
 
-- **19/10/2026:** criação da pasta `MCI/`, `git init`, primeiro commit, ligação ao remote `gverotti/MCI` e push. Criação deste `AGENTS.md`.
+- **19/10/2026:** criação da pasta `MCI/`, `git init`, primeiro commit, ligação ao remote `gverotti/MCI` e push. Criação deste `AGENTS.md`. Criação do `.venv` + `requirements.txt` copiando o ambiente do Modelagem_Logistico.
