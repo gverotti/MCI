@@ -127,6 +127,14 @@ Pasta baixada inteira do UCI (validada em 19/10/2026). Ela contém **3 bases dif
   - texture: DP dos tons de cinza.
   - smoothness, compactness, concavity, concave_points, symmetry e fractal_dim: grandezas **adimensionais**.
 
+**OBRIGATÓRIO NOS SLIDES (pedido do usuário, 19/10/2026): explicar a estrutura dos dados**, nos itens 1 e 5 do checklist. A ideia a passar:
+- 1 paciente → 1 **nódulo** (o tumor) → a agulha retira **algumas** células, que já são uma amostra do nódulo → imagem → vários **núcleos** (1 por célula) medidos pelo software.
+- O arquivo **não** traz os núcleos individuais. Traz **1 linha por paciente**, com cada característica resumida de 3 formas: `_mean` (média das células), `_se` (o quanto as células variam entre si) e `_worst` (média das 3 maiores).
+- O motivo: o diagnóstico é da paciente, não da célula.
+- Deixar clara a diferença entre as **duas médias**: a média *dentro* da paciente, que já vem no arquivo (ex.: `fractal_dim_mean`), e a média *entre* as pacientes, que é o que testamos (benignas × malignas).
+- Consequência estatística: cada linha é uma paciente diferente, então as observações são independentes, o que sustenta as suposições da permutação e do bootstrap. Se as linhas fossem núcleos, a independência cairia.
+- Sugestão: um diagrama simples paciente → nódulo → células/núcleos → 1 linha. O texto dos slides é escrito pela dupla.
+
 **WDBC (verificação rápida):** 569 ids únicos, 357 B e 212 M, sem faltantes. As medidas são contínuas e várias são assimétricas e não normais por classe (Shapiro: área com p < 1e-7 nos malignos, assimetria 1,11).
 
 ## Listas de exercícios (`Material/Listas de Exercicios/`)
