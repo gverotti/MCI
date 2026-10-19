@@ -50,11 +50,9 @@ Pode ser uma base usada em outra disciplina. Sites sugeridos: r-bloggers (datase
 - **Linguagem: Python, obrigatoriamente** (decidido em 19/10/2026). Não usar R.
 - **Base: Breast Cancer Wisconsin (Original)**, UCI: https://archive.ics.uci.edu/dataset/15/breast+cancer+wisconsin+original. Detalhes na seção "Dados".
 
-**Pendências de definição com o usuário:**
-- prazo real e dupla;
-- se a base já foi avisada à turma, com o link certo (se for a WDBC, é o dataset **17** do UCI, não o 15);
-- confirmação da abordagem e da variável;
-- ferramenta de slides.
+**Já resolvido pelo usuário (19/10/2026):** prazo, dupla, aviso da base à turma e ferramenta de slides. Os detalhes não foram passados ao agente. Se precisar deles, perguntar.
+
+**Pendências de definição com o usuário:** confirmação da abordagem B e escolha da variável (depois da Etapa 1).
 
 ## Abordagens propostas para o Trabalho 1 (discutidas em 19/10/2026)
 
@@ -117,6 +115,8 @@ Pasta baixada inteira do UCI (validada em 19/10/2026). Ela contém **3 bases dif
 **WDBC, variáveis com pouca diferença B×M** (d de Cohen, p de Welch): symmetry_se (−0,01; 0,89), texture_se (−0,02; 0,84), fractal_dim_mean (−0,03; 0,77; assimetria 1,64 em B), smoothness_se (−0,14; 0,11), fractal_dim_se (0,17; 0,04). Razão de variâncias M/B: symmetry_se 2,07, fractal_dim_worst 2,44.
 
 **WDBC = dataset 17 do UCI** (https://archive.ics.uci.edu/dataset/17/breast+cancer+wisconsin+diagnostic). O `wdbc.data` que já está na pasta é essa base, então **não é preciso baixar de novo**. Conferido em 19/10/2026: é idêntico ao `sklearn.datasets.load_breast_cancer()` (569×30, mesmos valores e mesmo diagnóstico). O sklearn serve de referência para os nomes das colunas.
+
+**Carregar a WDBC com Polars:** `wdbc.data` (sem cabeçalho). As colunas são `["id", "diagnostico"]` + `f"{c}_{estat}"` para `estat` em `["mean", "se", "worst"]` (nessa ordem, por fora) e `c` em `["radius", "texture", "perimeter", "area", "smoothness", "compactness", "concavity", "concave_points", "symmetry", "fractal_dim"]` (por dentro). Diagnóstico: B = benigno, M = maligno. Esses nomes foram dados pelo agente a partir do `wdbc.names`; o arquivo não traz nomes.
 
 **WDBC (verificação rápida):** 569 ids únicos, 357 B e 212 M, sem faltantes. As medidas são contínuas e várias são assimétricas e não normais por classe (Shapiro: área com p < 1e-7 nos malignos, assimetria 1,11).
 
@@ -229,10 +229,15 @@ MCI/
 
 ## Próximos passos
 
-1. Confirmar o prazo real do Trabalho 1 (o PDF diz 16/out, 8:00h).
-2. Confirmar a abordagem B e escolher a(s) variável(is) da WDBC. Avisar a turma da base, com o link do dataset 17.
-3. Levantar as unidades de medida das variáveis da WDBC para o item 1 dos slides (o `.names` não informa; as medidas vêm de imagem digitalizada).
-4. Definir a ferramenta dos slides.
+Plano em etapas (proposto e aceito em 19/10/2026); cada etapa = 1 notebook + figuras:
+1. **Etapa 1, `01_descritiva.ipynb`** (itens 2, 3, 4 e 7): carregar a WDBC; tabela-resumo por grupo; ranking por tamanho do efeito; gráficos e Shapiro das candidatas. O usuário escolhe a variável.
+2. **Etapa 2, `02_testes.ipynb`** (itens 5, 6 e 8): Welch, permutação e bootstrap (teste + IC). As funções ficam em `scripts/metodos.py`.
+3. **Etapa 3, `03_escolha_B.ipynb`**: estabilização para B = 100 a 10000.
+4. **Etapa 4, `04_subamostras.ipynb`**: n = 10, 20 e 30 por grupo, repetido; taxa de rejeição e discordância entre os métodos.
+5. Etapa 5 (opcional): teste de variâncias.
+6. Etapa 6: slides. O texto é do usuário; o agente revisa.
+
+Também é preciso levantar as unidades de medida das variáveis da WDBC para o item 1 dos slides (o `.names` não informa; as medidas vêm de imagem digitalizada).
 4. Montar o roteiro de análise seguindo o checklist de 8 itens + comparação paramétrico × permutação × bootstrap + escolha de B.
 
 ## Histórico
