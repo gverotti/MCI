@@ -229,6 +229,15 @@ MCI/
 
 ## Convenções
 
+- **Polars é obrigatório** para carregar e manipular dados (exigência do usuário, 19/10/2026). Não usar pandas. Conversão para numpy (`.to_numpy()`) só na hora de passar valores para scipy ou matplotlib.
+- **Os scripts e notebooks precisam ser entendidos e reproduzidos à mão por um humano** (exigência do usuário). Isso significa:
+  - células curtas, cada uma precedida por um markdown que explica o que faz e por quê, com a teoria quando houver;
+  - nomes de variáveis em português;
+  - nada de abstrações desnecessárias (funções só quando evitam repetição óbvia);
+  - comentários onde o código não é autoexplicativo.
+- Cores fixas nos gráficos: **azul `#2a78d6` = benigno** e **laranja `#eb6834` = maligno** (validadas para daltonismo). Figuras salvas em `figuras/<etapa>/`.
+- Notebooks rodam com cwd = `MCI/notebooks/`, então a raiz é `Path.cwd().parent`. Para executar pela linha de comando, usar `MCI\.venv\Scripts\jupyter-nbconvert.exe --execute --ExecutePreprocessor.kernel_name=mci`. O `jupyter` do PATH é o do `.venv` de Tópicos em Redes.
+
 - Simulações devem fixar semente (`set.seed` / `numpy.random.default_rng(seed)`) e registrá-la, para que os resultados sejam reproduzíveis.
 - Figuras geradas vão para `figuras/`, com nomes descritivos.
 - Commits com mensagens em português, descrevendo o que mudou.
@@ -247,7 +256,20 @@ MCI/
 ## Próximos passos
 
 Plano em etapas (proposto e aceito em 19/10/2026); cada etapa = 1 notebook + figuras:
-1. **Etapa 1, `01_descritiva.ipynb`** (itens 2, 3, 4 e 7): carregar a WDBC; tabela-resumo por grupo; ranking por tamanho do efeito; gráficos e Shapiro das candidatas. O usuário escolhe a variável.
+1. **Etapa 1, `notebooks/01_descritiva.ipynb`** (itens 2, 3, 4 e 7). **FEITA em 19/10/2026; falta a dupla escolher a variável** (célula 16 do notebook, "Decisão da dupla").
+   - Conteúdo: carga e conferência; tabela de 10 pacientes; formato longo (`unpivot`); resumo por grupo; d de Cohen e razão de variâncias (ranking das 30); gráficos (histograma, boxplot e QQ padronizado) das 5 de menor |d|; Shapiro; atípicos pela regra 1,5·IQR; quadro final; perguntas-guia para a escolha.
+   - Figuras em `figuras/01_descritiva/`.
+   - Resultado das candidatas:
+
+     | variável | d | razão var M/B | assimetria B / M | % atípicos B / M |
+     |---|---|---|---|---|
+     | symmetry_se | −0,013 | 2,07 | 1,37 / 2,50 | 2,8 / 7,5 |
+     | texture_se | −0,018 | 0,67 | 1,65 / 1,53 | 3,4 / 3,3 |
+     | fractal_dim_mean | −0,026 | 1,26 | 1,64 / 0,89 | 4,8 / 0,5 |
+     | smoothness_se | −0,14 | 0,89 | 1,50 / 3,93 | 4,8 / 2,4 |
+     | fractal_dim_se | 0,169 | 0,48 | 4,32 / 1,66 | 7,3 / 4,2 |
+
+     Todas rejeitam a normalidade no Shapiro (p < 1e-5) e os QQ-plots são curvos (cauda direita longa).
 2. **Etapa 2, `02_testes.ipynb`** (itens 5, 6 e 8): Welch, permutação e bootstrap (teste + IC). As funções ficam em `scripts/metodos.py`.
 3. **Etapa 3, `03_escolha_B.ipynb`**: estabilização para B = 100 a 10000.
 4. **Etapa 4, `04_subamostras.ipynb`**: n = 10, 20 e 30 por grupo, repetido; taxa de rejeição e discordância entre os métodos.
@@ -259,4 +281,4 @@ Também é preciso levantar as unidades de medida das variáveis da WDBC para o 
 
 ## Histórico
 
-- **19/10/2026:** criação da pasta `MCI/`, `git init`, primeiro commit, ligação ao remote `gverotti/MCI` e push. Criação deste `AGENTS.md`. Criação do `.venv` + `requirements.txt` copiando o ambiente do Modelagem_Logistico. Leitura completa do `Material/` (Unidades 02–04 + códigos R). Leitura das Listas 1 e 2 e do enunciado do Trabalho 1. Usuário escolheu Python e a base Breast Cancer Wisconsin (Original); validação feita (ids repetidos, 16 faltantes, pasta contém também WDBC e WPBC). Propostas as abordagens A, B e C, com a teoria detalhada; o usuário preferiu a B. Script de leitura em Polars entregue; explicado por que o `.venv` não aparecia no seletor de kernel. Criado `CLAUDE.md` importando este arquivo, porque a memória do agente se perde ao abrir `MCI/` como pasta.
+- **19/10/2026:** criação da pasta `MCI/`, `git init`, primeiro commit, ligação ao remote `gverotti/MCI` e push. Criação deste `AGENTS.md`. Criação do `.venv` + `requirements.txt` copiando o ambiente do Modelagem_Logistico. Leitura completa do `Material/` (Unidades 02–04 + códigos R). Leitura das Listas 1 e 2 e do enunciado do Trabalho 1. Usuário escolheu Python e a base Breast Cancer Wisconsin (Original); validação feita (ids repetidos, 16 faltantes, pasta contém também WDBC e WPBC). Propostas as abordagens A, B e C, com a teoria detalhada; o usuário preferiu a B. Script de leitura em Polars entregue; explicado por que o `.venv` não aparecia no seletor de kernel. Criado `CLAUDE.md` importando este arquivo, porque a memória do agente se perde ao abrir `MCI/` como pasta. Etapa 1 (`01_descritiva.ipynb`) criada e executada sem erros; definidas as convenções de Polars obrigatório e código legível por humanos.
