@@ -16,9 +16,56 @@ Leia este arquivo antes de alterar códigos, dados, notebooks ou o relatório. P
 - Repositório: https://github.com/gverotti/MCI (branch `main`).
 - Idioma do projeto: português (código pode ter nomes em português).
 
-## Objetivo do trabalho
+## Trabalho 1 (atual): `Material/Projeto Trabalhos/Trabalho 1/Trabalho_1_2026.pdf`
 
-*Ainda não definido.* O enunciado do trabalho ainda não foi passado. Quando chegar, registrar aqui: tema, entregáveis, prazo, linguagem exigida (R/Python) e critérios de avaliação.
+**Formato:** grupos de 2 pessoas (excepcionalmente 3). **A entrega é só de slides, sem relatório escrito.** A professora corrige pelos slides, então eles precisam ser autoexplicativos. Alguns grupos são sorteados para apresentar no horário da aula.
+
+**Dados:** cada grupo coleta um conjunto de dados que permita aplicar reamostragem e permutação em pelo menos um destes cenários:
+- 2 populações independentes;
+- 2 populações pareadas;
+- K > 2 populações independentes;
+- regressão linear ou generalizada.
+
+Pode ser uma base usada em outra disciplina. Sites sugeridos: r-bloggers (datasets), kdd.ics.uci.edu, csie.ntu.edu.tw/~cjlin/libsvmtools/datasets, kaggle.com/datasets, statsci.org/data. **Dois grupos não podem usar a mesma base**, por isso o grupo precisa avisar a turma qual vai usar.
+
+**Conteúdo obrigatório dos slides** (checklist da professora):
+1. Descrição de cada variável aleatória: local de coleta, forma de coleta, unidade de medida e o link, se vier de um site.
+2. Uma tabela com os dados, ou com parte deles.
+3. Objetivo(s) da análise descritos com clareza.
+4. Análise descritiva **antes** dos testes (gráficos e medidas resumo), mostrando pontos atípicos, indicando as conclusões prováveis e **justificando o uso de métodos não paramétricos** em vez de paramétricos.
+5. Hipóteses em termos matemáticos, em palavras e em termos do problema.
+6. Suposições de cada metodologia, com justificativa **estatística** (não vale "porque achei melhor").
+7. Verificação das suposições, quando possível, com gráficos ou medidas resumo.
+8. Interpretação e conclusão.
+
+**Análise exigida:** fazer as três versões, **paramétrica, permutação e bootstrap** (testes e/ou ICs). Depois comparar os resultados, discutir diferenças, vantagens e desvantagens, e **escolher o método mais adequado com justificativa**. A escolha de **B** deve ser justificada rodando o algoritmo para vários valores de B e mostrando a estabilização.
+
+**Prazo no PDF:** slides até **16/outubro, 8:00h**. ATENÇÃO: o PDF foi lido em 19/10/2026, depois dessa data. É preciso confirmar com o usuário o prazo real (adiamento? data de outro ano?).
+
+**Regras de nota zero:** trabalho muito parecido com estudos da literatura, livros, internet **ou plataformas de IA**. Portanto a base, as perguntas, as interpretações e o texto dos slides precisam ser do grupo. O agente apoia com código, conferência dos métodos e revisão, mas não deve entregar texto pronto e genérico para os slides.
+
+**Pendências de definição com o usuário:** prazo real, dupla, base de dados (e se já foi avisada à turma), cenário escolhido, linguagem (R ou Python) e ferramenta de slides.
+
+## Listas de exercícios (`Material/Listas de Exercicios/`)
+
+Não fazem parte do Trabalho 1, mas mostram o padrão de resposta que a professora espera: formular as hipóteses (no problema e em termos estatísticos), definir a variável aleatória, construir a RC, calcular o valor-p, concluir e checar as suposições.
+
+- **Lista 1** (Unidades 02–03):
+  - Ex1: outras estatísticas nos exemplos de permutação.
+  - Ex2: teste de permutação para igualdade de variâncias.
+  - Ex3: pressão arterial pareada (n = 11): permutação, bootstrap e teste paramétrico.
+  - Ex4: droga × placebo, 5 e 5, independentes: permutação, bootstrap e paramétrico.
+  - Ex5: IC bootstrap para a correlação de Pearson com B = 100, 500, 1000 e 5000, numa relação não linear.
+  - Ex6: jackknife × bootstrap na base law.
+  - Ex7: vício de S² com n e com n−1 e correções bootstrap e jackknife, N(0, 10).
+  - Ex8: 100 amostras N(1, 1) com n = 20; cobertura dos ICs paramétrico, bootstrap NP, bootstrap paramétrico e jackknife.
+  - Ex9: dose-resposta em porcos; MQ, bootstrap dos resíduos × bootstrap dos pares, testando H0: β = 20.
+- **Lista 2** (Unidade 04):
+  - Ex1: método delta para τ = p2 − p1 (30/50 × 40/50), IC 90%.
+  - Ex2: IC para μ2/μ1 pelo método delta.
+  - Ex3: delta para n/(Y+1), Poisson.
+  - Ex4: Gama(α, α/μ), EMV e escore de Fisher para μ, para α e para os dois, com simulação.
+  - Ex5: EM para o modelo de intercepto aleatório Yij = αi + Xijβ + εij.
 
 ## Material da professora (`Material/`)
 
@@ -97,13 +144,16 @@ MCI/
 - O README criado pelo GitHub foi mesclado (`--allow-unrelated-histories`), mantendo a versão local.
 - Ambiente virtual `.venv` criado e verificado (mesmas versões do Modelagem_Logistico; imports testados), kernel "Python (MCI)" registrado.
 - Material da professora (Unidades 02, 03 e 04) adicionado pelo usuário em `Material/` e lido; o resumo está acima.
+- Listas 1 e 2 e o enunciado do Trabalho 1 adicionados e lidos (resumo acima). Não havia códigos novos além dos 3 de `Codigos R/`.
 - Nenhum código nosso ou dado ainda.
 
 ## Próximos passos
 
-1. Receber o enunciado do trabalho e registrar na seção "Objetivo do trabalho".
-2. Definir a linguagem (R ou Python) e o formato do relatório.
+1. Confirmar o prazo real do Trabalho 1 (o PDF diz 16/out, 8:00h).
+2. Definir a dupla, a base de dados e o cenário (pareado, independentes, K grupos ou regressão).
+3. Definir a linguagem (R ou Python) e a ferramenta dos slides.
+4. Montar o roteiro de análise seguindo o checklist de 8 itens + comparação paramétrico × permutação × bootstrap + escolha de B.
 
 ## Histórico
 
-- **19/10/2026:** criação da pasta `MCI/`, `git init`, primeiro commit, ligação ao remote `gverotti/MCI` e push. Criação deste `AGENTS.md`. Criação do `.venv` + `requirements.txt` copiando o ambiente do Modelagem_Logistico. Leitura completa do `Material/` (Unidades 02–04 + códigos R).
+- **19/10/2026:** criação da pasta `MCI/`, `git init`, primeiro commit, ligação ao remote `gverotti/MCI` e push. Criação deste `AGENTS.md`. Criação do `.venv` + `requirements.txt` copiando o ambiente do Modelagem_Logistico. Leitura completa do `Material/` (Unidades 02–04 + códigos R). Leitura das Listas 1 e 2 e do enunciado do Trabalho 1.
