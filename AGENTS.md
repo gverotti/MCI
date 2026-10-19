@@ -50,9 +50,35 @@ Pode ser uma base usada em outra disciplina. Sites sugeridos: r-bloggers (datase
 - **Linguagem: Python, obrigatoriamente** (decidido em 19/10/2026). Não usar R.
 - **Base: Breast Cancer Wisconsin (Original)**, UCI: https://archive.ics.uci.edu/dataset/15/breast+cancer+wisconsin+original. Detalhes na seção "Dados".
 
+**VARIÁVEL ESCOLHIDA (19/10/2026): `fractal_dim_se`** (WDBC), benigno × maligno.
+
+**OBRIGATÓRIO NOS SLIDES (pedido do usuário):**
+1. **Tradução da variável:** "o quanto a irregularidade do contorno varia de uma célula para outra dentro do mesmo tumor". Ou seja, ela mede a **heterogeneidade das células**.
+2. **Pergunta com sentido médico:** "tumores malignos têm células mais heterogêneas entre si?" Na citologia, a variação no formato dos núcleos é um sinal clássico de malignidade, chamado **pleomorfismo nuclear**. **Conferir o termo com a professora ou em literatura antes de usar.**
+3. **O caminho que levou à variável**, construído no `01_descritiva.ipynb`:
+   - a maioria das variáveis tem diferença óbvia e todos os métodos rejeitam (é o problema do trabalho de referência);
+   - algumas não têm diferença nenhuma;
+   - a **zona de fronteira**, onde a escolha do método importa, tem só 2 variáveis: `smoothness_se` e `fractal_dim_se`;
+   - entre elas, só `fractal_dim_se` vai na **direção da hipótese médica** (malignos mais heterogêneos);
+   - ela também tem falta de normalidade, atípicos e variâncias diferentes.
+4. A estrutura dos dados (paciente → nódulo → células), já registrada na seção "Dados".
+
+**Achado da descritiva da `fractal_dim_se`:**
+
+| | benigno | maligno | M/B |
+|---|---|---|---|
+| média | 0,003636 | 0,004062 | +12% |
+| mediana | 0,002808 | 0,003739 | **+33%** |
+| DP | 0,00294 | 0,00204 | |
+| máx | 0,0298 | 0,0128 | |
+
+- Os **5 maiores valores da base são todos benignos** (0,0130 a 0,0298, sendo o máximo cerca de 10× a mediana). Eles puxam a média dos benignos para cima e mascaram a diferença.
+- Welch p = 0,042; Mann-Whitney p = 1,6e-6 (conferência do agente, não usada nos slides).
+- Implicação para a Etapa 2: testar **também a diferença de medianas** (D2 = Mediana(X) − Mediana(Y), Unid. 02, slide 15) por permutação e bootstrap, coisa que o teste t não faz. Isso é um argumento forte a favor dos métodos computacionais. Fazer também uma análise de sensibilidade aos atípicos.
+
 **Já resolvido pelo usuário (19/10/2026):** prazo, dupla, aviso da base à turma e ferramenta de slides. Os detalhes não foram passados ao agente. Se precisar deles, perguntar.
 
-**Pendências de definição com o usuário:** confirmação da abordagem B e escolha da variável (depois da Etapa 1).
+**Pendências de definição com o usuário:** se a Etapa 2 vai testar médias e medianas, ou só médias.
 
 ## Abordagens propostas para o Trabalho 1 (discutidas em 19/10/2026)
 
@@ -281,7 +307,16 @@ MCI/
 
 Plano em etapas (proposto e aceito em 19/10/2026); cada etapa = 1 notebook + figuras:
 1. **Etapa 1, `notebooks/01_descritiva.ipynb`** (itens 2, 3, 4 e 7). **FEITA em 19/10/2026; falta a dupla escolher a variável** (célula 16 do notebook, "Decisão da dupla").
-   - Conteúdo: carga e conferência; tabela de 10 pacientes; formato longo (`unpivot`); resumo por grupo; d de Cohen e razão de variâncias (ranking das 30); gráficos (histograma, boxplot e QQ padronizado) das 5 de menor |d|; Shapiro; atípicos pela regra 1,5·IQR; quadro final; perguntas-guia para a escolha.
+   - **Reescrito em 19/10/2026 para contar a história da escolha** (19 seções), a pedido do usuário, que precisa entender e defender o caminho:
+     - Seções 1–8: carga, conferência, estrutura dos dados, tabela, formato longo e resumo.
+     - Seção 9: d de Cohen.
+     - Seção 10: **três situações** (`concave_points_worst` óbvia com d = 2,6; `fractal_dim_mean` sem diferença; `fractal_dim_se` fronteira). Figura `tres_situacoes.png`.
+     - Seção 11: **zona de fronteira**, com EP(d) ≈ √(1/n₁ + 1/n₂) = 0,0867 e z = d/EP. Cortes |z| < 1 (sem diferença), 1 a 3,5 (fronteira) e ≥ 3,5 (óbvia). Resultado: 25 óbvias, 3 sem diferença e 2 na fronteira (`smoothness_se` com z = −1,61 e `fractal_dim_se` com z = 1,94). Figura `zona_fronteira.png`.
+     - Seção 12: a pergunta médica (`_se` = heterogeneidade). Só `fractal_dim_se` vai na direção da hipótese.
+     - Seções 13–16: gráficos, Shapiro, atípicos e quadro das 5 candidatas.
+     - Seção 17: foco na `fractal_dim_se` (resumo completo, média × mediana, top 10 valores, sensibilidade sem os k maiores benignos, ECDF). Figura `ecdf_fractal_dim_se.png`.
+     - Seção 18: tabela com os 7 argumentos e a nota de honestidade metodológica (dizer nos slides que a fronteira foi um critério, porque o objetivo é comparar métodos).
+     - Seção 19: decisão da dupla. A pergunta e a justificativa devem ser escritas pela dupla.
    - Figuras em `figuras/01_descritiva/`.
    - Resultado das candidatas:
 
