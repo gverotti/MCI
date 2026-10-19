@@ -118,6 +118,15 @@ Pasta baixada inteira do UCI (validada em 19/10/2026). Ela contém **3 bases dif
 
 **Carregar a WDBC com Polars:** `wdbc.data` (sem cabeçalho). As colunas são `["id", "diagnostico"]` + `f"{c}_{estat}"` para `estat` em `["mean", "se", "worst"]` (nessa ordem, por fora) e `c` em `["radius", "texture", "perimeter", "area", "smoothness", "compactness", "concavity", "concave_points", "symmetry", "fractal_dim"]` (por dentro). Diagnóstico: B = benigno, M = maligno. Esses nomes foram dados pelo agente a partir do `wdbc.names`; o arquivo não traz nomes.
 
+**O que é cada linha e cada coluna da WDBC** (explicado ao usuário em 19/10/2026):
+- **Cada linha** é 1 paciente (1 massa mamária): uma punção aspirativa por agulha fina (FNA) foi digitalizada como imagem, e o software traçou o contorno de cada núcleo celular.
+- **Colunas:** 10 características medidas em cada núcleo e resumidas por imagem de 3 formas: `_mean` (média dos núcleos), `_se` (erro padrão, ou seja, heterogeneidade entre os núcleos) e `_worst` (média dos 3 maiores valores).
+- **Unidades:**
+  - radius e perimeter: comprimento na escala da imagem. A unidade física **não** consta no `.names`; conferir em Street, Wolberg & Mangasarian (1993).
+  - area: essa unidade ao quadrado. Coerente: radius_mean ≈ 14 e area_mean ≈ 655 ≈ π·14².
+  - texture: DP dos tons de cinza.
+  - smoothness, compactness, concavity, concave_points, symmetry e fractal_dim: grandezas **adimensionais**.
+
 **WDBC (verificação rápida):** 569 ids únicos, 357 B e 212 M, sem faltantes. As medidas são contínuas e várias são assimétricas e não normais por classe (Shapiro: área com p < 1e-7 nos malignos, assimetria 1,11).
 
 ## Listas de exercícios (`Material/Listas de Exercicios/`)
