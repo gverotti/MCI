@@ -15,12 +15,11 @@ MCI/
 
 ## Tópicos da disciplina
 
-- Geração de números pseudoaleatórios
-- Métodos de Monte Carlo
-- Bootstrap e Jackknife
-- Testes de permutação
-- MCMC (Metropolis-Hastings, Gibbs)
-- Algoritmo EM
+- Unidade 02: testes de permutação (pareados, independentes, K grupos)
+- Unidade 03: métodos de reamostragem (bootstrap, jackknife, validação cruzada)
+- Unidade 04: otimização estatística (método delta, escore de Fisher, algoritmo EM)
+
+Professora: Daiane A. Zuanetti (DEs – UFSCar).
 
 ## Autor
 
