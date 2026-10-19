@@ -137,6 +137,30 @@ Pasta baixada inteira do UCI (validada em 19/10/2026). Ela contém **3 bases dif
 
 **WDBC (verificação rápida):** 569 ids únicos, 357 B e 212 M, sem faltantes. As medidas são contínuas e várias são assimétricas e não normais por classe (Shapiro: área com p < 1e-7 nos malignos, assimetria 1,11).
 
+## Trabalho de referência de um ano anterior (`Material/INTRODUÇÃO.pdf`)
+
+São slides de outro grupo (Brendon Sandre, Murilo Cassiavilani e Ariel Morais; mesma professora; acesso aos dados em out/2025), com 21 páginas. **Serve só de referência de formato. NÃO copiar.** A regra da nota zero vale para trabalhos parecidos com estudos disponíveis.
+
+**O que eles fizeram:**
+- Base **original** (dataset 15, escores de 1 a 10), benigno × maligno, com a variável principal `Thickness` (espessura) e tabelas para as 9 variáveis.
+- Sequência: título → introdução (variáveis) → descrição dos dados (local, forma de coleta, unidade) → tabela da base → objetivos → metodologia → descritiva (tabela de medidas, violino, histogramas, médias por classe) → QQ-plots (não normal) → teste t → permutação (10.000 permutações, p = 0,0001) → bootstrap (B = 1000 escolhido por gráfico de estabilização, IC 95% para a diferença = [3,87; 4,56]) → conclusão (preferem o bootstrap) → referências.
+- **Todos os testes deram p ≈ 0.** A comparação entre métodos ficou sem conteúdo.
+
+**Fraquezas a evitar no nosso trabalho:**
+1. A tabela de medidas resumo tem valores incoerentes com a escala (média 44 numa escala de 1 a 10).
+2. Médias de escala ordinal tratadas como contínuas, sem discussão.
+3. Valor-p da permutação reportado como 0,0001, quando o correto é "p < 1/B".
+4. A conclusão afirma que o bootstrap "é robusto a outliers". Isso está **errado** para a média: o bootstrap da média herda a sensibilidade da média.
+5. Faltantes e ids repetidos não foram tratados.
+6. A diferença óbvia faz os 3 métodos concordarem e não há discussão real de vantagens e desvantagens.
+
+**Pontos bons:**
+- Notaram que a permutação supõe distribuições iguais sob H0.
+- Fizeram o gráfico de estabilização de B.
+- Seguiram o checklist da professora em ordem.
+
+**Implicação:** usar a WDBC (outra base) com uma variável de resposta não óbvia já diferencia o nosso trabalho deste. Repetir "base original + benigno × maligno + thickness" seria parecido demais.
+
 ## Listas de exercícios (`Material/Listas de Exercicios/`)
 
 Não fazem parte do Trabalho 1, mas mostram o padrão de resposta que a professora espera: formular as hipóteses (no problema e em termos estatísticos), definir a variável aleatória, construir a RC, calcular o valor-p, concluir e checar as suposições.
