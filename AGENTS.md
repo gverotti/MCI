@@ -8,6 +8,8 @@ Leia este arquivo antes de alterar códigos, dados, notebooks ou o relatório. P
 
 **Regra permanente de memória:** este arquivo é a memória de longo prazo do projeto. Sempre que houver avanço (novo enunciado, decisão do usuário, script ou notebook novo, resultado obtido, mudança de estado de uma etapa), atualize este arquivo **na mesma sessão**, antes de encerrar o trabalho. O usuário usa este arquivo para recuperar o contexto quando a conversa é resetada, então ele deve refletir o estado real do projeto: o que já foi feito, os resultados atuais, as decisões tomadas e o que falta.
 
+**Sobre a memória do agente:** a memória automática do Claude Code é separada por pasta aberta no VS Code. O usuário às vezes abre `VSCODE/` (a pasta pai) e às vezes `MCI/` direto (Open Folder). Por isso **este arquivo é a única memória confiável**. O `CLAUDE.md` deste projeto importa este arquivo (`@AGENTS.md`) para que ele seja carregado nos dois casos. Registre aqui tudo o que for discutido e decidido; não confie na memória da conversa.
+
 ## Contexto
 
 - Disciplina: **Métodos Computacionalmente Intensivos em Estatística (MCI)**, curso de Estatística, DEs – UFSCar, 2026.
@@ -48,7 +50,44 @@ Pode ser uma base usada em outra disciplina. Sites sugeridos: r-bloggers (datase
 - **Linguagem: Python, obrigatoriamente** (decidido em 19/10/2026). Não usar R.
 - **Base: Breast Cancer Wisconsin (Original)**, UCI: https://archive.ics.uci.edu/dataset/15/breast+cancer+wisconsin+original. Detalhes na seção "Dados".
 
-**Pendências de definição com o usuário:** prazo real, dupla, se a base já foi avisada à turma, qual dos 3 arquivos usar (original × WDBC), cenário/pergunta, tratamento dos IDs repetidos e ferramenta de slides.
+**Pendências de definição com o usuário:**
+- prazo real e dupla;
+- se a base já foi avisada à turma, com o link certo (se for a WDBC, é o dataset **17** do UCI, não o 15);
+- confirmação da abordagem e da variável;
+- ferramenta de slides.
+
+## Abordagens propostas para o Trabalho 1 (discutidas em 19/10/2026)
+
+Contexto: na base original, benigno × maligno dá valor-p ≈ 0 em qualquer método, e a comparação entre métodos, que é o centro do trabalho, fica pouco informativa. Por isso foram propostos 3 caminhos. Lógica comum: os 3 métodos só diferem em **como obtêm a distribuição da estatística sob H0**.
+- Paramétrico: fórmula (t, F, Normal); supõe normalidade e homocedasticidade.
+- Permutação: embaralha os rótulos; supõe **intercambiabilidade**, ou seja, mesma distribuição e inclusive mesma variância sob H0.
+- Bootstrap: reamostra com reposição, com F̂ no lugar de F; supõe uma amostra representativa.
+
+**A. K > 2 grupos: lotes de coleta (base original).** Pergunta: o `clump_thickness` mudou ao longo dos 8 lotes? H0: μ₁ = … = μ₈.
+- Paramétrico: ANOVA F ~ F(K−1, N−K).
+- Permutação: Unid. 02, slides 18–19. Embaralha os 699 casos mantendo os nᵢ e calcula p = #(F* ≥ Fobs)/B, com B aleatório porque a enumeração é inviável.
+- Bootstrap: translação ỹᵢⱼ = yᵢⱼ − ȳᵢ + ȳ (generalização dos slides 22 e 24), reamostrando **dentro** de cada lote. Tolera variâncias diferentes, ao contrário da permutação. Opção de usar o F de Welch e IC percentil para μ₁ − μ₈.
+- Discussão de confundimento: a % de malignos varia de 16% a 45% entre os lotes, então convém refazer só com os benignos.
+- Pontos fortes: justificativa forte para o não paramétrico (ordinal, nᵢ de 17 a 367) e alta originalidade. Ponto fraco: não há código da professora para esse cenário.
+
+**B. 2 grupos independentes: benigno × maligno numa variável de pouca diferença (WDBC). PREFERIDA PELO USUÁRIO (19/10/2026).**
+- Ex.: `fractal_dim_mean` (p de Welch = 0,77, assimetria 1,64 em B). H0: E(X) = E(Y), bilateral.
+- Paramétrico: t de Welch.
+- Permutação: Unid. 02, slides 11–16, com T1 = ΣXᵢ ou X̄ − Ȳ e B aleatório, já que C(569,357) é inviável. Valor-p bilateral = 2·min das caudas.
+- Bootstrap: teste com translação para z̄ e estatística de Welch, valor-p com |T| (Unid. 03, slides 23–24). IC percentil para μM − μB reamostrando os originais (slide 18 e código das 2 Gamas).
+- Bônus: teste de variâncias D3 = S²ₓ/S²ᵧ (slide 15; Lista 1, Ex2). É preciso centrar os grupos antes de permutar, porque o teste exige médias iguais. O F paramétrico de variâncias é muito sensível à falta de normalidade. Candidata: `symmetry_se`, com razão de variâncias 2,07.
+- Ponto fraco: com n = 357/212 o TCL faz os 3 métodos concordarem. Contorno: **estudo com subamostras pequenas** (ex.: n = 10 por grupo, repetidas), para mostrar quando os métodos divergem.
+- Variáveis com p **limítrofe** tendem a mostrar mais diferença entre os métodos no nível de 5%: `fractal_dim_se` (p = 0,042, assimetria 4,32 em B) e `smoothness_se` (p = 0,11).
+
+**C. Regressão logística (original ou WDBC).** logit P(maligno) = β₀ + β₁x, OR = e^β₁, H0: β₁ = 0.
+- Paramétrico: IC de Wald com EP da inversa da informação de Fisher (o EMV sai pelo escore de Fisher da Unid. 04) e IC do OR pelo método delta.
+- Bootstrap dos **pares** (Unid. 03, slide 29). O bootstrap de resíduos não faz sentido com Y binário. Alternativa: bootstrap paramétrico com Y* ~ Bernoulli(p̂ᵢ).
+- Permutação: embaralha y em relação a x.
+- Risco: **separação**, em que β̂ → ∞ e algumas reamostras não convergem. É a abordagem mais trabalhosa.
+
+**Escolha de B (vale para todas):** rodar B = 100, 500, 1000, 5000 e 10000, plotar o valor-p e os limites do IC em função de B e mostrar a estabilização. O erro de Monte Carlo do valor-p é ≈ √[p(1−p)/B].
+
+Sugestão do agente: B é a mais simples e a mais próxima do código das aulas. Funciona bem **se** incluir o estudo com subamostras pequenas e/ou uma variável com p limítrofe. Sem isso, a conclusão vira "todos os métodos concordam porque n é grande". A combinação "A principal + B complemento" também foi sugerida.
 
 ## Dados (`dados/breast+cancer+wisconsin+original/`)
 
@@ -73,7 +112,7 @@ Pasta baixada inteira do UCI (validada em 19/10/2026). Ela contém **3 bases dif
   - (d) É uma das bases mais conhecidas da internet, o que aumenta o risco das regras "mesma base de outro grupo" e "parecido com estudos disponíveis".
 - Origem, para o item 1 dos slides: University of Wisconsin Hospitals, Madison, casos clínicos do Dr. William H. Wolberg, coletados de 1989 a 1991. Os escores vêm de citologia por aspiração com agulha fina (FNA), atribuídos pelo médico.
 
-**Lotes de coleta (base original):** o `.data` está em ordem cronológica, então o lote sai da posição da linha, com tamanhos 367, 70, 31, 17, 48, 49, 31 e 86 (conferido com `unformatted-data`). Proporção de malignos por lote: 0,455; 0,186; 0,290; 0,176; 0,250; 0,184; 0,452; 0,163. Mediana do `clump` por lote: 5, 3, 5, 5, 4, 4, 5, 3. Dos 46 ids repetidos, 16 aparecem em lotes diferentes (o `unformatted-data` cita um paciente que "reaparece no Grupo 8") e 30 dentro do mesmo lote.
+**Lotes de coleta (base original):** o `.data` está em ordem cronológica, então o lote sai da posição da linha, com tamanhos 367, 70, 31, 17, 48, 49, 31 e 86 (conferido com `unformatted-data`). Proporção de malignos por lote: 0,455; 0,186; 0,290; 0,176; 0,250; 0,184; 0,452; 0,163. Mediana do `clump` por lote: 5, 3, 5, 5, 4, 4, 5, 3. **Datas dos lotes** (só mês/ano, que é a data de *montagem/envio* do lote, não a data de cada paciente): 1 = jan/1989, 2 = out/1989, 3 = fev/1990, 4 = abr/1990, 5 = ago/1990, 6 = dez/1990 (o `unformatted-data` diz "December 7, 1990; Updated Jan 8, 1991", e o `.names` diz "Updated January 1991"), 7 = jun/1991, 8 = nov/1991. Conferência linha a linha (19/10/2026): o `.data` dividido pelos tamanhos é **idêntico** ao `unformatted-data`, que tem outra ordem de colunas (a classe vem na 2ª coluna) e usa 0 no lugar de `?`. Então a atribuição do lote pela posição está confirmada. Divergências na documentação: o cabeçalho do grupo 7 diz 16B/15M, mas os dados têm 17B/14M; o rodapé diz "Current Total 698", mas são 699 linhas. Dos 46 ids repetidos, 16 aparecem em lotes diferentes (o `unformatted-data` cita um paciente que "reaparece no Grupo 8") e 30 dentro do mesmo lote.
 
 **WDBC, variáveis com pouca diferença B×M** (d de Cohen, p de Welch): symmetry_se (−0,01; 0,89), texture_se (−0,02; 0,84), fractal_dim_mean (−0,03; 0,77; assimetria 1,64 em B), smoothness_se (−0,14; 0,11), fractal_dim_se (0,17; 0,04). Razão de variâncias M/B: symmetry_se 2,07, fractal_dim_worst 2,44.
 
@@ -160,7 +199,12 @@ MCI/
 
 - `.venv/` local (fora do git), Python 3.12.10 (`C:\Users\Giovani Verotti\AppData\Local\Programs\Python\Python312`).
 - `requirements.txt` é uma **cópia exata** (`pip freeze`, 138 pacotes) do `.venv` do `../Modelagem_Logistico`, feita a pedido do usuário. Principais: numpy 1.26.4, scipy 1.17.1, pandas 3.0.5, polars 1.43.2, scikit-learn 1.9.0, statsmodels 0.14.6, matplotlib 3.11.1, numba 0.68.0, networkx, igraph, cvxpy, optbinning, skglm, jupyter.
-- Kernel Jupyter registrado como **"Python (MCI)"** (nome `mci`).
+- Kernel Jupyter registrado como **"Python (MCI)"** (nome `mci`, em `%APPDATA%\jupyter\kernels\mci`).
+- **Selecionar o kernel no VS Code:** se o VS Code estiver aberto em `VSCODE/`, o `.venv` do MCI **não aparece** automaticamente, porque a extensão só procura na raiz da pasta aberta. Há três saídas:
+  - "Select Kernel" → "Select Another Kernel…" → "Jupyter Kernel…" → "Python (MCI)". Se não aparecer, rodar "Developer: Reload Window".
+  - "Python Environments…" → "Enter interpreter path" → `C:\Users\Giovani Verotti\Desktop\VSCODE\MCI\.venv\Scripts\python.exe`.
+  - Abrir `MCI/` com Open Folder. O usuário passou a fazer isso em 19/10/2026.
+- Carregar a base original com Polars: `pl.read_csv(caminho, has_header=False, new_columns=COLUNAS, null_values="?", schema_overrides={"bare_nuclei": pl.Int64})`. O lote sai da posição da linha, com tamanhos `[367, 70, 31, 17, 48, 49, 31, 86]`. Classe: 2 = benigno, 4 = maligno. O usuário começou o notebook `notebooks/20261019_df_inicial.ipynb` com esse script.
 - Recriar: `python -m venv .venv` → `.venv\Scripts\python -m pip install -r requirements.txt`.
 - Ao instalar uma lib nova, atualizar o `requirements.txt` (`pip freeze > requirements.txt`, mantendo o cabeçalho) e anotar aqui.
 
@@ -178,15 +222,17 @@ MCI/
 - Ambiente virtual `.venv` criado e verificado (mesmas versões do Modelagem_Logistico; imports testados), kernel "Python (MCI)" registrado.
 - Material da professora (Unidades 02, 03 e 04) adicionado pelo usuário em `Material/` e lido; o resumo está acima.
 - Listas 1 e 2 e o enunciado do Trabalho 1 adicionados e lidos (resumo acima). Não havia códigos novos além dos 3 de `Codigos R/`.
-- Nenhum código nosso ou dado ainda.
+- Dados baixados em `dados/breast+cancer+wisconsin+original/` (ainda fora do git, assim como `Material/`).
+- Primeiro notebook: `notebooks/20261019_df_inicial.ipynb` (1 célula, polars). Ele lê o `.data` com `?` → nulo, cria a coluna `lote` (1–8) a partir dos tamanhos cronológicos e a coluna `diagnostico` (benigno/maligno). Usa caminho absoluto em `CAMINHO`, ainda não foi executado/salvo com saídas e ainda não trata os ids repetidos.
 
 ## Próximos passos
 
 1. Confirmar o prazo real do Trabalho 1 (o PDF diz 16/out, 8:00h).
-2. Definir: arquivo (original × WDBC), cenário e pergunta, tratamento dos ids repetidos; avisar a turma da base.
-3. Definir a ferramenta dos slides.
+2. Confirmar a abordagem B e escolher a(s) variável(is) da WDBC. Avisar a turma da base, com o link do dataset 17.
+3. Levantar as unidades de medida das variáveis da WDBC para o item 1 dos slides (o `.names` não informa; as medidas vêm de imagem digitalizada).
+4. Definir a ferramenta dos slides.
 4. Montar o roteiro de análise seguindo o checklist de 8 itens + comparação paramétrico × permutação × bootstrap + escolha de B.
 
 ## Histórico
 
-- **19/10/2026:** criação da pasta `MCI/`, `git init`, primeiro commit, ligação ao remote `gverotti/MCI` e push. Criação deste `AGENTS.md`. Criação do `.venv` + `requirements.txt` copiando o ambiente do Modelagem_Logistico. Leitura completa do `Material/` (Unidades 02–04 + códigos R). Leitura das Listas 1 e 2 e do enunciado do Trabalho 1. Usuário escolheu Python e a base Breast Cancer Wisconsin (Original); validação feita (ids repetidos, 16 faltantes, pasta contém também WDBC e WPBC).
+- **19/10/2026:** criação da pasta `MCI/`, `git init`, primeiro commit, ligação ao remote `gverotti/MCI` e push. Criação deste `AGENTS.md`. Criação do `.venv` + `requirements.txt` copiando o ambiente do Modelagem_Logistico. Leitura completa do `Material/` (Unidades 02–04 + códigos R). Leitura das Listas 1 e 2 e do enunciado do Trabalho 1. Usuário escolheu Python e a base Breast Cancer Wisconsin (Original); validação feita (ids repetidos, 16 faltantes, pasta contém também WDBC e WPBC). Propostas as abordagens A, B e C, com a teoria detalhada; o usuário preferiu a B. Script de leitura em Polars entregue; explicado por que o `.venv` não aparecia no seletor de kernel. Criado `CLAUDE.md` importando este arquivo, porque a memória do agente se perde ao abrir `MCI/` como pasta.
