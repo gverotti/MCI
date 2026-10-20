@@ -83,6 +83,23 @@ Pode ser uma base usada em outra disciplina. Sites sugeridos: r-bloggers (datase
 - **% de malignos por quintil de `fractal_dim_se`:** 23,7%, 28,1%, 37,2%, 50,0% e 47,4% (geral: 37,3%). Ou seja, **quanto mais heterogêneas as células, maior a proporção de malignos**, exceto nos extremos: acima de 0,0125 há 5 benignos e 2 malignos.
 - Essa tabela é uma boa candidata a slide, para evitar a leitura errada de que "variar mais indica tumor benigno".
 
+**ACHADO IMPORTANTE: testes de igualdade de variâncias** (prévia em 19/10/2026, pergunta do usuário; ainda **não** está nos notebooks nem no relatório):
+
+| teste | resultado |
+|---|---|
+| F de Snedecor (supõe normalidade) | razão 0,483; p = 1,4e-8 → "diferem" |
+| Levene (centrado na média) | p = 0,148 |
+| Brown-Forsythe (centrado na mediana) | p = 0,454 |
+| permutação de log(razão de variâncias), grupos centrados na mediana, B = 10.000 | p = 0,172 |
+| razão dos IQR M/B = 1,05; permutação de log(razão IQR) | p = 0,650 |
+| bootstrap IC percentil 95% da razão de variâncias | [0,26; 0,97] (exclui 1 por pouco) |
+| sem os 5 maiores benignos | razão de variâncias = **1,07**; Brown-Forsythe p = 0,49 |
+
+- **Conclusão:** a diferença de variâncias **não é robusta**. Ela vem **inteiramente dos 5 benignos extremos**; o espalhamento típico (IQR) é igual. Só o teste F, inválido sem normalidade, a declara significativa. Isso é exatamente a "pegadinha" da Lista 1, Ex2.
+- **Ajuste necessário na narrativa:** onde se diz "variâncias diferentes, suposição violada", dizer "a variância **amostral** dos benignos é inflada por poucos atípicos". A mecânica Student × Welch continua valendo, porque ela depende das variâncias amostrais. Mas o problema de fundo são as **caudas pesadas e os atípicos**, mais do que a heterocedasticidade.
+- **Não usar o teste de variâncias para escolher entre Student e Welch** (pré-teste); a recomendação atual é usar o Welch por padrão.
+- **Pendente:** decidir com o usuário se vira a Etapa 5 (`05_variancias.ipynb`) e se o relatório (seções 5.4, 7, 8 e 10) deve ser ajustado.
+
 **Já resolvido pelo usuário (19/10/2026):** prazo, dupla, aviso da base à turma e ferramenta de slides. Os detalhes não foram passados ao agente. Se precisar deles, perguntar.
 
 **Pendências de definição com o usuário:** se o notebook, as figuras e os dados podem ir para o git (perguntado várias vezes, sem resposta; até agora só o AGENTS.md e o CLAUDE.md são commitados).
