@@ -76,6 +76,13 @@ Pode ser uma base usada em outra disciplina. Sites sugeridos: r-bloggers (datase
 - Welch p = 0,042; Mann-Whitney p = 1,6e-6 (conferência do agente, não usada nos slides).
 - Implicação para a Etapa 2: testar **também a diferença de medianas** (D2 = Mediana(X) − Mediana(Y), Unid. 02, slide 15) por permutação e bootstrap, coisa que o teste t não faz. Isso é um argumento forte a favor dos métodos computacionais. Fazer também uma análise de sensibilidade aos atípicos.
 
+**CUIDADO: há duas "variabilidades" diferentes** (o usuário confundiu as duas; explicar bem nos slides):
+- **A variável `fractal_dim_se` em si** mede a variabilidade **dentro** de uma paciente, de célula para célula. É o "escore de heterogeneidade" de cada paciente.
+- **A variância do grupo** mede o quanto esse escore varia **entre** as pacientes do grupo. Ela não diz quem é "mais heterogêneo"; diz quão **diferentes entre si** são as pacientes do grupo.
+- Os benignos têm variância de grupo maior **só por causa de poucos casos extremos**. A benigna típica tem escore **menor** (mediana 0,0028 contra 0,0037 nas malignas).
+- **% de malignos por quintil de `fractal_dim_se`:** 23,7%, 28,1%, 37,2%, 50,0% e 47,4% (geral: 37,3%). Ou seja, **quanto mais heterogêneas as células, maior a proporção de malignos**, exceto nos extremos: acima de 0,0125 há 5 benignos e 2 malignos.
+- Essa tabela é uma boa candidata a slide, para evitar a leitura errada de que "variar mais indica tumor benigno".
+
 **Já resolvido pelo usuário (19/10/2026):** prazo, dupla, aviso da base à turma e ferramenta de slides. Os detalhes não foram passados ao agente. Se precisar deles, perguntar.
 
 **Pendências de definição com o usuário:** se o notebook, as figuras e os dados podem ir para o git (perguntado várias vezes, sem resposta; até agora só o AGENTS.md e o CLAUDE.md são commitados).
