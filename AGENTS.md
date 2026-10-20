@@ -406,6 +406,12 @@ Plano em etapas (proposto e aceito em 19/10/2026); cada etapa = 1 notebook + fig
 6. Etapa 6: slides. O texto é do usuário; o agente revisa.
    - **Relatório técnico base: `relatorio/relatorio_tecnico.md`** (criado em 19/10/2026 a pedido do usuário). Consolida tudo: dados, escolha da variável, descritiva, hipóteses, métodos, resultados, por que discordam, B, discussão, perguntas para a conclusão, **roteiro de 22 slides** com figura e item do checklist, perguntas prováveis, pendências e referências.
    - Ao mudar resultados (ex.: reexecutar a Etapa 2 com B = 30.000), **atualizar o relatório** também.
+   - **Relatório em Word: `relatorio/relatorio_tecnico.docx`** (24 páginas, 9 figuras, 18 tabelas, 15 equações nativas do Word; criado em 19/10/2026 a pedido do usuário). Inclui a fundamentação teórica completa (lógica do teste, t de Student e Welch, TCL, permutação, bootstrap com plug-in/EPB/IC/translação, Monte Carlo, ferramentas descritivas), além do conteúdo do `.md`. Capa com "[Nomes da dupla]" a preencher.
+   - **Como regerar:**
+     1. `MCI\.venv\Scripts\python.exe MCI\scripts\gera_relatorio_docx.py "<caminho do MCI>"` (python-docx; os números estão **escritos no script**, então atualizar o script se os resultados mudarem).
+     2. `powershell -File MCI\scripts\word_pos_relatorio.ps1 -Docx <docx> -Pdf <pdf>`: o Word via COM converte os parágrafos de estilo "Formula" (UnicodeMath) em equações, atualiza o sumário e exporta o PDF.
+   - Armadilhas: "#" quebra o UnicodeMath (usar a função indicadora I(·)). Asteriscos de estimador no texto viram "∗" para não serem lidos como itálico. O `List Number` precisa de uma nova instância de numeração por lista.
+   - Não há LibreOffice nem pdftoppm na máquina. Para conferir as páginas, foi usado PyMuPDF num venv temporário do scratchpad (instalar com `--no-deps`, por causa do limite de caminho longo no Windows).
 
 Também é preciso levantar as unidades de medida das variáveis da WDBC para o item 1 dos slides (o `.names` não informa; as medidas vêm de imagem digitalizada).
 4. Montar o roteiro de análise seguindo o checklist de 8 itens + comparação paramétrico × permutação × bootstrap + escolha de B.
