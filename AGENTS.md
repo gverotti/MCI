@@ -354,7 +354,25 @@ Plano em etapas (proposto e aceito em 19/10/2026); cada etapa = 1 notebook + fig
    - Para a mediana, todos rejeitam com folga.
    - Histograma bootstrap da mediana "serrilhado" (a mediana é discreta), explicado no notebook.
    - Seção 8 do notebook: interpretação e escolha do método ficam para a dupla escrever.
-3. **Etapa 3, `03_escolha_B.ipynb`**: estabilização para B = 100 a 10000. Incluir a **variação entre sementes** (vários reruns por B), já que o resultado da média está na fronteira. Mostrar a faixa dos valores-p e dos limites do IC percentil em função de B, e com que frequência o IC percentil exclui o zero. Erro de Monte Carlo do valor-p ≈ √[p(1−p)/B].
+3. **Etapa 3, `notebooks/03_escolha_B.ipynb`**. **FEITA em 19/10/2026** (leva cerca de 3 minutos para rodar). Figura `figuras/03_escolha_B/estabilizacao_B.png`.
+   - Desenho: grade B = 100, 250, 500, 1000, 2500, 5000, 10000 e 20000 × **30 repetições**, com semente `default_rng([B, repetição])`, mais uma referência com B = 100.000 (semente 12345).
+   - As funções `permutacao`, `bootstrap_ic` e `bootstrap_teste_media` estão no notebook (os mesmos cálculos da Etapa 2).
+   - Conceito central explicado: incerteza **amostral** (cai com n) × **de Monte Carlo** (cai com B). Aumentar B não muda o que os dados dizem.
+   - **Resultados:**
+     - EPB ≈ 0,000209: já razoável com B = 100 (dp relativo ≈ 7%) e menos de 1% a partir de B ≈ 2500.
+     - Valores-p médios estáveis: perm D1 ≈ 0,068, perm Welch ≈ 0,030, teste bootstrap ≈ 0,043. O dp cai como 1/√B. A permutação tem dp cerca de √2 acima da fórmula porque o valor-p é o dobro de uma cauda.
+     - % de repetições que **rejeitam** a 5%, para B = 100 → 10.000:
+       - perm D1: 33% → 0%;
+       - perm Welch: 90% → 100%;
+       - teste bootstrap: 50% → 100% (100% desde B = 5000);
+       - IC normal: 83% → 100%;
+       - **IC percentil da média: 83%, 87%, 83%, 60%, 63%, 87%, 90% e 100% (B = 20.000)**;
+       - mediana: 100% para todo B.
+     - Referência B = 100.000: perm D1 = 0,0688; perm Welch = 0,0308; teste bootstrap = 0,0432; **IC percentil inf = +0,0000092** (exclui o zero por pouco); IC inf mediana = 0,000515.
+     - B necessário (critério de 2 erros de Monte Carlo até a linha de decisão): teste bootstrap ≈ 3.600; **IC percentil da média ≈ 27.000**.
+   - **Escolha:** B = 10.000 para os testes e o EPB. IC percentil da média com **B ≥ 30.000** (ou B = 100.000), dizendo que é limítrofe.
+   - **Correção na leitura da Etapa 2:** o IC percentil [−0,000001; …] com a semente 2026 foi ruído de Monte Carlo. O IC ideal exclui o zero. Foi adicionada uma nota no `02_testes.ipynb` (seção 7.1), sem reexecutar.
+   - Opcional: reexecutar a Etapa 2 com B = 30.000 para o IC percentil ficar coerente com a Etapa 3.
 4. **Etapa 4, `04_subamostras.ipynb`**: n = 10, 20 e 30 por grupo, repetido; taxa de rejeição e discordância entre os métodos.
 5. Etapa 5 (opcional): teste de variâncias.
 6. Etapa 6: slides. O texto é do usuário; o agente revisa.
