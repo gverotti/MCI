@@ -426,7 +426,8 @@ Plano em etapas (proposto e aceito em 19/10/2026); cada etapa = 1 notebook + fig
    - Ao mudar resultados (ex.: reexecutar a Etapa 2 com B = 30.000), **atualizar o relatório** também.
    - **VERSÃO ATUAL (20/10/2026): `relatorio/relatorio_tecnico.docx` SIMPLES**, com 11 páginas, 6 figuras e 11 tabelas. Pedido do usuário: "claro, básico, sem firula, **sem Monte Carlo**", seguindo a sequência de seções do trabalho de referência (`Material/INTRODUÇÃO.pdf`), que é a ordem do checklist.
      - Seções: introdução → descrição dos dados → base de dados → objetivos → metodologia (com o porquê da variável) → descritiva → hipóteses → teste t → permutação → bootstrap → escolha de B → comparação → conclusão → perguntas prováveis → referências.
-     - Ficaram **de fora**: d de Cohen e zona de fronteira, permutação com T de Welch, teste bootstrap com translação, IC normal, ECDF, fórmulas e o termo "Monte Carlo".
+     - Ficaram **de fora**: d de Cohen e zona de fronteira, permutação com T de Welch, IC normal, ECDF, fórmulas e o termo "Monte Carlo".
+     - **Teste bootstrap com os grupos deslocados (translação) foi ADICIONADO** a pedido do usuário (20/10/2026): seção 10.1, Tabela 9 (média p = 0,0435; mediana p < 0,0001), uma linha a mais na comparação e duas perguntas prováveis. Agora o documento tem 12 páginas e 12 tabelas. Os números vêm do `02_testes` (seções 5.3 e 5.4).
      - A conclusão traz uma **sugestão** (o bootstrap como método escolhido), marcada para a dupla reescrever.
      - Gerador: `scripts/gera_relatorio_docx.py`. Pós-processamento: `scripts/word_pos_relatorio.ps1`.
      - **O usuário quer manter tudo simples daqui pra frente: não trazer Monte Carlo nem extras para o trabalho.**
