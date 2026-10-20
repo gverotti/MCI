@@ -237,7 +237,13 @@ São slides de outro grupo (Brendon Sandre, Murilo Cassiavilani e Ariel Morais; 
 - (1) "sob H0" só aparecia no título das figuras de permutação e em "H0 é verdadeira" no slide 17; faltava no texto do teste t (T ~ t sob H0), da permutação e do bootstrap deslocado.
 - (2) O IC só tinha a regra de decisão ("limite > 0, rejeita") e "a diferença é pelo menos esse valor", sem "verdadeira diferença populacional".
 - (3) O bootstrap só dizia "a amostra representa bem a população".
-- Correção proposta ao usuário: aguardando OK. Editar **no arquivo**, sem regenerar.
+- **CORRIGIDO em 20/10/2026** (com backups em `scratchpad/backup/`):
+  - **PowerPoint**, editado no próprio arquivo com python-pptx (`scratchpad/corrige_deck.py`):
+    - textos dos slides de métodos, teste t, permutação, IC bootstrap e bootstrap deslocado agora falam da "distribuição sob H₀" e da interpretação "o IC contém a verdadeira diferença populacional";
+    - o gráfico do IC é explicado como "não é sob H₀";
+    - **slide novo "Suposições do bootstrap"**, logo depois do IC bootstrap (tabela suposição × nossos dados × situação).
+    - O deck agora tem **22 slides**: 16 IC bootstrap, **17 Suposições do bootstrap**, 18 teste deslocado, **19 Escolha de B**, 20 Comparação, 21 Conclusão, 22 Referências.
+  - **Relatório Word**: regenerado pelo gerador, porque o usuário não o tinha editado. Ficou com 13 páginas: "Sob H₀, T segue t", interpretação do IC nas seções 8 e 10, "distribuição sob H₀" na permutação e no teste deslocado, Tabela 8 de suposições do bootstrap e 2 perguntas novas.
 
 **Implicação:** usar a WDBC (outra base) com uma variável de resposta não óbvia já diferencia o nosso trabalho deste. Repetir "base original + benigno × maligno + thickness" seria parecido demais.
 
@@ -467,7 +473,7 @@ Plano em etapas (proposto e aceito em 19/10/2026); cada etapa = 1 notebook + fig
      - **Ilustração dos núcleos:** `scripts/ilustracao_nucleos.py` gera `figuras/00_ilustracao/ilustra_fractal.png` (liso 1,02 / pouco irregular 1,04 / muito irregular 1,12, por box-counting) e `ilustra_heterogeneidade.png` (benigno: média 1,035, EP 0,001; maligno: média 1,086, EP 0,025). São contornos **simulados**, e os slides dizem isso.
      - **Regerar:** `NODE_PATH=<pasta com pptxgenjs>\node_modules node scripts\gera_slides.js "<MCI>" "<skill pptx>\scripts\apply_theme.js"`. O pptxgenjs 3.12.0 foi instalado em `scratchpad\slides` (temporário; reinstalar com `npm install pptxgenjs@3.12.0` numa pasta qualquer). Validar com `validate.py` da skill. Renderizar com o PowerPoint via COM (`SaveAs(pdf, 32)`) + PyMuPDF.
      - Pendências na apresentação: nomes da dupla na capa; conclusão a reescrever com as palavras da dupla; confirmar "pleomorfismo nuclear".
-     - **REGRA (20/10/2026): o usuário edita o .pptx à mão. NUNCA regenerar o deck com `gera_slides.js` ("não regenere nada que eu excluí").** Ele excluiu "Vantagens e desvantagens" e agora são **21 slides**; o slide 18 é "Escolha do número de reamostras B". Qualquer mudança deve ser feita **no próprio arquivo** (editar o XML do zip), com backup antes.
+     - **REGRA (20/10/2026): o usuário edita o .pptx à mão. NUNCA regenerar o deck com `gera_slides.js` ("não regenere nada que eu excluí").** Ele excluiu "Vantagens e desvantagens" (ficaram 21 slides). Depois das correções da professora, o deck passou a ter 22 slides; "Escolha do número de reamostras B" é agora o slide 19. Qualquer mudança deve ser feita **no próprio arquivo** (editar o XML do zip), com backup antes.
      - **Paleta trocada para AZUL** a pedido do usuário (não gostou do roxo), direto no arquivo:
        - `scratchpad/recolore_deck.py` trocou as cores fixas das tabelas e do gráfico (6B3F8E→1D4E89, F3EEF7→EEF4FA, D8CCE3→C9DAEA, E6E0EC→DDE6EF, 3E2459→0B2545, 1F1A24→14213D, 8A7A96→6C7A89) e substituiu `ppt/media/image1.png` pela ilustração fractal azul;
        - `apply_theme.js` aplicou o tema "MCI Azul" (dk2 0B2545, accent1 1D4E89, accent2 3E92CC, lt2 EEF4FA, accent6 C9DAEA, accent5 6C7A89; dados continuam azul 2A78D6 = benigno e laranja EB6834 = maligno).
