@@ -100,7 +100,12 @@ Pode ser uma base usada em outra disciplina. Sites sugeridos: r-bloggers (datase
 - **Não usar o teste de variâncias para escolher entre Student e Welch** (pré-teste); a recomendação atual é usar o Welch por padrão.
 - **Resolvido em 20/10/2026 (versão simples):** a Etapa 5 **não** foi criada (o usuário quer simplicidade). A correção entrou como "sem as 5 benignas extremas, a razão de variâncias vai de 0,48 para 1,07" (`01_descritiva` seção 17.4 e relatório simples seção 6.3). Os textos do `02_testes` foram ajustados ("variância amostral inflada por 5 pacientes").
 
-**PRÉVIA DE TESTES UNILATERAIS** (H1: maligno > benigno, justificada pela teoria do pleomorfismo; pedido do usuário em 20/10/2026; **ainda não está nos notebooks nem no relatório**, aguardando o OK). Mesmos sorteios da Etapa 2 (B = 20.000, semente 2026); script em `scratchpad/previa_unilateral.py`.
+**TESTES UNILATERAIS = ANÁLISE FINAL** (H1: maligno > benigno, justificada pela teoria do pleomorfismo; aprovado pelo usuário em 20/10/2026).
+- **Implementado:**
+  - `02_testes` ganhou a seção **6b** (unilateral com os mesmos sorteios; figuras `perm_unilateral.png` e `bootstrap_ic_unilateral.png`; quadro `quadro_uni`). A seção 2 agora diz que a análise final é unilateral e que a bilateral fica como referência.
+  - `03_escolha_B` ganhou as colunas unilaterais e a seção **8.1**. Decisões unilaterais estáveis a partir de B = 1.000: % de rejeição da permutação 73/90/93/100… para B = 100/250/500/1000; teste bootstrap 90/100…; IC bootstrap unilateral 100% em todos. A figura simples (`estabilizacao_B_simples.png`) agora é unilateral.
+  - O **relatório simples** foi reescrito para a versão unilateral: hipóteses com ">" e caixa "Por que unilateral", tabelas t/perm/boot/deslocado/comparação unilaterais, nota "se fosse bilateral, Student e permutação não rejeitariam", B (estável desde 1.000; usamos 20.000 por folga), conclusão e perguntas ("Por que unilateral?").
+- Resultados originalmente da prévia (`scratchpad/previa_unilateral.py`), conferidos no notebook: Mesmos sorteios da Etapa 2 (B = 20.000, semente 2026); script em `scratchpad/previa_unilateral.py`.
 
 | parâmetro | método | p bilateral | p unilateral |
 |---|---|---|---|
