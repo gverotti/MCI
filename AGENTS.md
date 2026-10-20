@@ -187,6 +187,27 @@ São slides de outro grupo (Brendon Sandre, Murilo Cassiavilani e Ariel Morais; 
 
 **Implicação:** usar a WDBC (outra base) com uma variável de resposta não óbvia já diferencia o nosso trabalho deste. Repetir "base original + benigno × maligno + thickness" seria parecido demais.
 
+## Alinhamento do trabalho com o material da professora (revisado em 19/10/2026)
+
+**Segue o material dela:**
+- **Permutação** (Unid. 02, slides 11–17): lógica, permutações aleatórias, valor-p bilateral = 2 × cauda e RC por quantis, como no `teste_permutacao.txt`. D1 equivale ao T1 = ΣX. A estatística t (slide 15) e a diferença de medianas D2 (slide 15) estão na lista dela de "outras estatísticas".
+- **Bootstrap IC** (Unid. 03, slides 15–18): reamostragem separada por grupo, IC normal θ̂ ± 1,96·EPB e IC percentil, iguais ao código "IC para diferença de duas médias" e ao LIN/LSN/LIP/LSP do `metodos_reamostragem.txt`.
+- **Bootstrap teste** (slides 23–24): translação para z̄ com estatística de Welch e |T|.
+- **Escolha de B:** pedida no enunciado; slide 12.
+- **Suposições:** slide 11 (permutação exige a mesma distribuição) e slide 25 (permutação × bootstrap).
+
+**Vai além do material (a dupla precisa saber defender):**
+- d de Cohen, EP(d) e "zona de fronteira": estatística básica, usada só para escolher a variável.
+- Shapiro-Wilk.
+- t de Welch como teste paramétrico.
+- Permutação com a estatística de Welch (variante studentizada).
+- Teste bootstrap da **mediana** com translação para a mediana combinada (extensão da lógica do slide 24).
+- Repetições com várias sementes e a fórmula do erro de Monte Carlo √[p(1−p)/B] (o slide 12 só diz "checar estabilidade").
+- Reportar o valor-p como "< 1/B".
+- **Python em vez de R:** o enunciado não exige linguagem.
+
+**Não usado (e não exigido no Trabalho 1):** jackknife, validação cruzada, K > 2, regressão e toda a Unid. 04 (delta, escore de Fisher, EM).
+
 ## Listas de exercícios (`Material/Listas de Exercicios/`)
 
 Não fazem parte do Trabalho 1, mas mostram o padrão de resposta que a professora espera: formular as hipóteses (no problema e em termos estatísticos), definir a variável aleatória, construir a RC, calcular o valor-p, concluir e checar as suposições.
