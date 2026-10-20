@@ -404,6 +404,8 @@ Plano em etapas (proposto e aceito em 19/10/2026); cada etapa = 1 notebook + fig
 4. **Etapa 4, `04_subamostras.ipynb`**: n = 10, 20 e 30 por grupo, repetido; taxa de rejeição e discordância entre os métodos.
 5. Etapa 5 (opcional): teste de variâncias.
 6. Etapa 6: slides. O texto é do usuário; o agente revisa.
+   - **Relatório técnico base: `relatorio/relatorio_tecnico.md`** (criado em 19/10/2026 a pedido do usuário). Consolida tudo: dados, escolha da variável, descritiva, hipóteses, métodos, resultados, por que discordam, B, discussão, perguntas para a conclusão, **roteiro de 22 slides** com figura e item do checklist, perguntas prováveis, pendências e referências.
+   - Ao mudar resultados (ex.: reexecutar a Etapa 2 com B = 30.000), **atualizar o relatório** também.
 
 Também é preciso levantar as unidades de medida das variáveis da WDBC para o item 1 dos slides (o `.names` não informa; as medidas vêm de imagem digitalizada).
 4. Montar o roteiro de análise seguindo o checklist de 8 itens + comparação paramétrico × permutação × bootstrap + escolha de B.
