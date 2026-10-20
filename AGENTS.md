@@ -98,7 +98,7 @@ Pode ser uma base usada em outra disciplina. Sites sugeridos: r-bloggers (datase
 - **Conclusão:** a diferença de variâncias **não é robusta**. Ela vem **inteiramente dos 5 benignos extremos**; o espalhamento típico (IQR) é igual. Só o teste F, inválido sem normalidade, a declara significativa. Isso é exatamente a "pegadinha" da Lista 1, Ex2.
 - **Ajuste necessário na narrativa:** onde se diz "variâncias diferentes, suposição violada", dizer "a variância **amostral** dos benignos é inflada por poucos atípicos". A mecânica Student × Welch continua valendo, porque ela depende das variâncias amostrais. Mas o problema de fundo são as **caudas pesadas e os atípicos**, mais do que a heterocedasticidade.
 - **Não usar o teste de variâncias para escolher entre Student e Welch** (pré-teste); a recomendação atual é usar o Welch por padrão.
-- **Pendente:** decidir com o usuário se vira a Etapa 5 (`05_variancias.ipynb`) e se o relatório (seções 5.4, 7, 8 e 10) deve ser ajustado.
+- **Resolvido em 20/10/2026 (versão simples):** a Etapa 5 **não** foi criada (o usuário quer simplicidade). A correção entrou como "sem as 5 benignas extremas, a razão de variâncias vai de 0,48 para 1,07" (`01_descritiva` seção 17.4 e relatório simples seção 6.3). Os textos do `02_testes` foram ajustados ("variância amostral inflada por 5 pacientes").
 
 **Já resolvido pelo usuário (19/10/2026):** prazo, dupla, aviso da base à turma e ferramenta de slides. Os detalhes não foram passados ao agente. Se precisar deles, perguntar.
 
@@ -374,7 +374,8 @@ Plano em etapas (proposto e aceito em 19/10/2026); cada etapa = 1 notebook + fig
      | fractal_dim_se | 0,169 | 0,48 | 4,32 / 1,66 | 7,3 / 4,2 |
 
      Todas rejeitam a normalidade no Shapiro (p < 1e-5) e os QQ-plots são curvos (cauda direita longa).
-2. **Etapa 2, `notebooks/02_testes.ipynb`** (itens 5, 6 e 8). **FEITA em 19/10/2026.**
+2. **Etapa 2, `notebooks/02_testes.ipynb`** (itens 5, 6 e 8). **FEITA em 19/10/2026; REEXECUTADA com B = 20.000 em 20/10/2026.**
+   - Números atuais (B = 20.000, semente 2026): Student p = 0,0631; Welch p = 0,0422; perm D1 p = 0,0683 (RC ≤ −0,000436 ou ≥ 0,000456); perm T de Welch p = 0,0272; perm D2 p < 0,0001; teste bootstrap da média p = 0,0435; EPB D1 = 0,000209; IC normal D1 [0,000016; 0,000837]; **IC percentil D1 [0,000006; 0,000830] (exclui o zero)**; IC percentil D2 [0,000511; 0,001210]. A tabela abaixo é da versão B = 10.000 (histórico).
    - O usuário aceitou testar **médias (principal) e medianas (complemento)**.
    - H0 bilateral: o bilateral é conservador porque a descritiva já foi vista. α = 5%, B = 10.000, SEMENTE = 2026, diferenças maligno − benigno.
    - As funções ficaram **dentro do notebook**, por legibilidade. Mover para `scripts/metodos.py` se as Etapas 3 e 4 precisarem reutilizar.
@@ -415,7 +416,7 @@ Plano em etapas (proposto e aceito em 19/10/2026); cada etapa = 1 notebook + fig
        - mediana: 100% para todo B.
      - Referência B = 100.000: perm D1 = 0,0688; perm Welch = 0,0308; teste bootstrap = 0,0432; **IC percentil inf = +0,0000092** (exclui o zero por pouco); IC inf mediana = 0,000515.
      - B necessário (critério de 2 erros de Monte Carlo até a linha de decisão): teste bootstrap ≈ 3.600; **IC percentil da média ≈ 27.000**.
-   - **Escolha:** B = 10.000 para os testes e o EPB. IC percentil da média com **B ≥ 30.000** (ou B = 100.000), dizendo que é limítrofe.
+   - **Escolha final (20/10/2026): B = 20.000**, porque é o menor B da grade em que as 30 repetições dão a mesma decisão em todos os procedimentos. O notebook ganhou a figura `estabilizacao_B_simples.png` (IC inf. bootstrap e valor-p da permutação, média). Escolha anterior (histórico): B = 10.000 nos testes e B ≥ 30.000 no IC percentil.
    - **Correção na leitura da Etapa 2:** o IC percentil [−0,000001; …] com a semente 2026 foi ruído de Monte Carlo. O IC ideal exclui o zero. Foi adicionada uma nota no `02_testes.ipynb` (seção 7.1), sem reexecutar.
    - Opcional: reexecutar a Etapa 2 com B = 30.000 para o IC percentil ficar coerente com a Etapa 3.
 4. **Etapa 4, `04_subamostras.ipynb`**: n = 10, 20 e 30 por grupo, repetido; taxa de rejeição e discordância entre os métodos.
@@ -423,7 +424,14 @@ Plano em etapas (proposto e aceito em 19/10/2026); cada etapa = 1 notebook + fig
 6. Etapa 6: slides. O texto é do usuário; o agente revisa.
    - **Relatório técnico base: `relatorio/relatorio_tecnico.md`** (criado em 19/10/2026 a pedido do usuário). Consolida tudo: dados, escolha da variável, descritiva, hipóteses, métodos, resultados, por que discordam, B, discussão, perguntas para a conclusão, **roteiro de 22 slides** com figura e item do checklist, perguntas prováveis, pendências e referências.
    - Ao mudar resultados (ex.: reexecutar a Etapa 2 com B = 30.000), **atualizar o relatório** também.
-   - **Relatório em Word: `relatorio/relatorio_tecnico.docx`** (24 páginas, 9 figuras, 18 tabelas, 15 equações nativas do Word; criado em 19/10/2026 a pedido do usuário). Inclui a fundamentação teórica completa (lógica do teste, t de Student e Welch, TCL, permutação, bootstrap com plug-in/EPB/IC/translação, Monte Carlo, ferramentas descritivas), além do conteúdo do `.md`. Capa com "[Nomes da dupla]" a preencher.
+   - **VERSÃO ATUAL (20/10/2026): `relatorio/relatorio_tecnico.docx` SIMPLES**, com 11 páginas, 6 figuras e 11 tabelas. Pedido do usuário: "claro, básico, sem firula, **sem Monte Carlo**", seguindo a sequência de seções do trabalho de referência (`Material/INTRODUÇÃO.pdf`), que é a ordem do checklist.
+     - Seções: introdução → descrição dos dados → base de dados → objetivos → metodologia (com o porquê da variável) → descritiva → hipóteses → teste t → permutação → bootstrap → escolha de B → comparação → conclusão → perguntas prováveis → referências.
+     - Ficaram **de fora**: d de Cohen e zona de fronteira, permutação com T de Welch, teste bootstrap com translação, IC normal, ECDF, fórmulas e o termo "Monte Carlo".
+     - A conclusão traz uma **sugestão** (o bootstrap como método escolhido), marcada para a dupla reescrever.
+     - Gerador: `scripts/gera_relatorio_docx.py`. Pós-processamento: `scripts/word_pos_relatorio.ps1`.
+     - **O usuário quer manter tudo simples daqui pra frente: não trazer Monte Carlo nem extras para o trabalho.**
+   - Versão anterior, detalhada (24 páginas, com teoria completa e números de B = 10.000): `relatorio/relatorio_tecnico_detalhado.docx` / `.md`. Gerador: `scripts/gera_relatorio_detalhado_docx.py`. Está **desatualizada** em relação a B = 20.000 e à correção sobre as variâncias.
+   - **Relatório em Word detalhado (histórico):** (24 páginas, 9 figuras, 18 tabelas, 15 equações nativas do Word; criado em 19/10/2026 a pedido do usuário). Inclui a fundamentação teórica completa (lógica do teste, t de Student e Welch, TCL, permutação, bootstrap com plug-in/EPB/IC/translação, Monte Carlo, ferramentas descritivas), além do conteúdo do `.md`. Capa com "[Nomes da dupla]" a preencher.
    - **Como regerar:**
      1. `MCI\.venv\Scripts\python.exe MCI\scripts\gera_relatorio_docx.py "<caminho do MCI>"` (python-docx; os números estão **escritos no script**, então atualizar o script se os resultados mudarem).
      2. `powershell -File MCI\scripts\word_pos_relatorio.ps1 -Docx <docx> -Pdf <pdf>`: o Word via COM converte os parágrafos de estilo "Formula" (UnicodeMath) em equações, atualiza o sumário e exporta o PDF.
