@@ -78,7 +78,7 @@ Pode ser uma base usada em outra disciplina. Sites sugeridos: r-bloggers (datase
 
 **Já resolvido pelo usuário (19/10/2026):** prazo, dupla, aviso da base à turma e ferramenta de slides. Os detalhes não foram passados ao agente. Se precisar deles, perguntar.
 
-**Pendências de definição com o usuário:** se a Etapa 2 vai testar médias e medianas, ou só médias.
+**Pendências de definição com o usuário:** se o notebook, as figuras e os dados podem ir para o git (perguntado várias vezes, sem resposta; até agora só o AGENTS.md e o CLAUDE.md são commitados).
 
 ## Abordagens propostas para o Trabalho 1 (discutidas em 19/10/2026)
 
@@ -329,8 +329,32 @@ Plano em etapas (proposto e aceito em 19/10/2026); cada etapa = 1 notebook + fig
      | fractal_dim_se | 0,169 | 0,48 | 4,32 / 1,66 | 7,3 / 4,2 |
 
      Todas rejeitam a normalidade no Shapiro (p < 1e-5) e os QQ-plots são curvos (cauda direita longa).
-2. **Etapa 2, `02_testes.ipynb`** (itens 5, 6 e 8): Welch, permutação e bootstrap (teste + IC). As funções ficam em `scripts/metodos.py`.
-3. **Etapa 3, `03_escolha_B.ipynb`**: estabilização para B = 100 a 10000.
+2. **Etapa 2, `notebooks/02_testes.ipynb`** (itens 5, 6 e 8). **FEITA em 19/10/2026.**
+   - O usuário aceitou testar **médias (principal) e medianas (complemento)**.
+   - H0 bilateral: o bilateral é conservador porque a descritiva já foi vista. α = 5%, B = 10.000, SEMENTE = 2026, diferenças maligno − benigno.
+   - As funções ficaram **dentro do notebook**, por legibilidade. Mover para `scripts/metodos.py` se as Etapas 3 e 4 precisarem reutilizar.
+   - Figuras em `figuras/02_testes/`.
+   - Resultados (D1 obs = 0,000426; D2 obs = 0,000931):
+
+     | parâmetro | método | supõe var iguais | p / IC 95% | 5% |
+     |---|---|---|---|---|
+     | média | t de Student | sim | p = 0,0631; IC [−0,000023; 0,000876] | não rejeita |
+     | média | t de Welch | não | p = 0,0422; IC [0,000015; 0,000838] | rejeita |
+     | média | permutação D1 | sim | p = 0,0690 | não rejeita |
+     | média | permutação T Welch | menos sensível | p = 0,0274 | rejeita |
+     | média | bootstrap teste (translação para z̄, Welch) | não | p = 0,0432 | rejeita |
+     | média | bootstrap IC normal | não | [0,000014; 0,000839] | rejeita |
+     | média | bootstrap IC percentil | não | **[−0,000001; 0,000826]** | não rejeita (por um fio) |
+     | mediana | permutação D2 | sim | p < 0,0001 | rejeita |
+     | mediana | bootstrap teste (translação para a mediana combinada) | não | p < 0,0001 | rejeita |
+     | mediana | bootstrap IC percentil | não | [0,000501; 0,001214] | rejeita |
+
+   - **Leitura:** para a média, os métodos que supõem variâncias iguais não rejeitam e os que não supõem rejeitam. O motivo: quando o grupo maior (benigno, n = 357) tem a maior variância, o teste com variância combinada fica conservador.
+   - O IC percentil encosta no zero e **depende da semente** (na prévia com outra sequência de sorteios ele excluía o zero), o que alimenta a Etapa 3.
+   - Para a mediana, todos rejeitam com folga.
+   - Histograma bootstrap da mediana "serrilhado" (a mediana é discreta), explicado no notebook.
+   - Seção 8 do notebook: interpretação e escolha do método ficam para a dupla escrever.
+3. **Etapa 3, `03_escolha_B.ipynb`**: estabilização para B = 100 a 10000. Incluir a **variação entre sementes** (vários reruns por B), já que o resultado da média está na fronteira. Mostrar a faixa dos valores-p e dos limites do IC percentil em função de B, e com que frequência o IC percentil exclui o zero. Erro de Monte Carlo do valor-p ≈ √[p(1−p)/B].
 4. **Etapa 4, `04_subamostras.ipynb`**: n = 10, 20 e 30 por grupo, repetido; taxa de rejeição e discordância entre os métodos.
 5. Etapa 5 (opcional): teste de variâncias.
 6. Etapa 6: slides. O texto é do usuário; o agente revisa.
