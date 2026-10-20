@@ -100,6 +100,20 @@ Pode ser uma base usada em outra disciplina. Sites sugeridos: r-bloggers (datase
 - **Não usar o teste de variâncias para escolher entre Student e Welch** (pré-teste); a recomendação atual é usar o Welch por padrão.
 - **Resolvido em 20/10/2026 (versão simples):** a Etapa 5 **não** foi criada (o usuário quer simplicidade). A correção entrou como "sem as 5 benignas extremas, a razão de variâncias vai de 0,48 para 1,07" (`01_descritiva` seção 17.4 e relatório simples seção 6.3). Os textos do `02_testes` foram ajustados ("variância amostral inflada por 5 pacientes").
 
+**PRÉVIA DE TESTES UNILATERAIS** (H1: maligno > benigno, justificada pela teoria do pleomorfismo; pedido do usuário em 20/10/2026; **ainda não está nos notebooks nem no relatório**, aguardando o OK). Mesmos sorteios da Etapa 2 (B = 20.000, semente 2026); script em `scratchpad/previa_unilateral.py`.
+
+| parâmetro | método | p bilateral | p unilateral |
+|---|---|---|---|
+| média | Student | 0,0631 (não rejeita) | **0,0315 (rejeita)** |
+| média | Welch | 0,0422 | 0,0211 |
+| média | permutação D1 | 0,0683 (não rejeita) | **0,0341 (rejeita)** |
+| média | bootstrap teste deslocado | 0,0435 | 0,0255 |
+| mediana | permutação D2 e bootstrap deslocado | < 0,00005 | < 0,00005 |
+
+- ICs unilaterais 95% [lim; +∞): Student 0,000049; Welch 0,000081; bootstrap média 0,000074; bootstrap mediana 0,000570.
+- RC unilateral da permutação: D1 ≥ 0,000382 e D2 ≥ 0,000354.
+- **Efeito:** com o teste unilateral, todos rejeitam para a média e a discordância a 5% desaparece. A ordem dos valores-p continua (Student e permutação maiores; Welch e bootstrap menores).
+
 **Já resolvido pelo usuário (19/10/2026):** prazo, dupla, aviso da base à turma e ferramenta de slides. Os detalhes não foram passados ao agente. Se precisar deles, perguntar.
 
 **Pendências de definição com o usuário:** se o notebook, as figuras e os dados podem ir para o git (perguntado várias vezes, sem resposta; até agora só o AGENTS.md e o CLAUDE.md são commitados).
