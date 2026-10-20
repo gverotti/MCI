@@ -228,6 +228,17 @@ São slides de outro grupo (Brendon Sandre, Murilo Cassiavilani e Ariel Morais; 
 - Fizeram o gráfico de estabilização de B.
 - Seguiram o checklist da professora em ordem.
 
+**Correções que a professora fez no trabalho de referência** (repassadas pelo usuário em 20/10/2026). **Evitar no nosso trabalho:**
+1. Dizer explicitamente que a distribuição (da permutação ou do bootstrap deslocado) é a **distribuição da estatística sob H0**.
+2. Na interpretação do **IC**, dizer que ele **inclui a verdadeira média** (o parâmetro populacional), com 95% de confiança.
+3. Apresentar as **suposições do bootstrap**.
+
+**Conferência do nosso material (20/10/2026): os três pontos estavam presentes, ao menos em parte.**
+- (1) "sob H0" só aparecia no título das figuras de permutação e em "H0 é verdadeira" no slide 17; faltava no texto do teste t (T ~ t sob H0), da permutação e do bootstrap deslocado.
+- (2) O IC só tinha a regra de decisão ("limite > 0, rejeita") e "a diferença é pelo menos esse valor", sem "verdadeira diferença populacional".
+- (3) O bootstrap só dizia "a amostra representa bem a população".
+- Correção proposta ao usuário: aguardando OK. Editar **no arquivo**, sem regenerar.
+
 **Implicação:** usar a WDBC (outra base) com uma variável de resposta não óbvia já diferencia o nosso trabalho deste. Repetir "base original + benigno × maligno + thickness" seria parecido demais.
 
 ## Alinhamento do trabalho com o material da professora (revisado em 19/10/2026)
